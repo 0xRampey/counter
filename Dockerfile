@@ -1,3 +1,8 @@
+ARG PRIVATE_KEY
+ARG DATABASE_URI
+ARG VULCAN_RPC
+ARG REGISTRY_CONTRACT
+
 FROM node:lts-bookworm-slim
 
 RUN npm install -g npm@latest
@@ -7,8 +12,13 @@ RUN npm install -g bun
 
 WORKDIR /app
 
-# Copy env files
-COPY .env .env
+# Create .env file
+RUN echo "NODE_ENV=development" >> .env
+RUN echo "PORT=3000" >> .env
+RUN echo "PRIVATE_KEY=$PRIVATE_KEY" >>.env
+RUN echo "DATABASE_URI=$DATABASE_URI" >>.env
+RUN echo "VULCAN_RPC=$VULCAN_RPC" >>.env
+RUN echo "REGISTRY_CONTRACT=$REGISTRY_CONTRACT" >>.env
 
 # Copy package.json and tsconfig.json
 COPY package.json package.json
